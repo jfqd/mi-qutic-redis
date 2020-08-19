@@ -8,8 +8,9 @@ if mdata-get redis_master_host 1>/dev/null 2>&1; then
   else
     REDIS_PORT="6379"
   fi
-  
-  if [[ $REDIS_MASTER_HOST != "127.0.0.1" ]]; then
+
+  ACTIVE_IP=$(ifconfig net0 | grep 'inet '  | awk '{print $2}' | tr -d '\n')
+  if [[ $REDIS_MASTER_HOST != "${ACTIVE_IP}" ]]; then
     sed -i "s/# slaveof <masterip> <masterport>/slaveof ${REDIS_MASTER_HOST} ${REDIS_PORT}/" \
         /opt/local/etc/redis.conf
     sed -i "s/127.0.0.1/${REDIS_MASTER_HOST}/" \
