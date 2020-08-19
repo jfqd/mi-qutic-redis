@@ -8,7 +8,7 @@ PATH=/opt/local/gnu/bin:/opt/local/bin:/opt/local/sbin:/usr/bin:/usr/sbin
 set -o errexit
 
 echo "* Setup redis-requirements"
-mv /var/tmp/sentinel.conf /opt/local/etc/sentinel.conf
+mv /var/zoneinit/tmp/sentinel.conf /opt/local/etc/sentinel.conf
 chown redis:redis /opt/local/etc/redis.conf
 chown redis:redis /opt/local/etc/sentinel.conf
 gem install redis
@@ -30,6 +30,7 @@ chown root:spiped /etc/ssh/spiped.key
 echo "* Cleaning up"
 rm /root/customize
 cp /etc/skel/.bashrc /root/.bashrc
+rm -rf /var/zoneinit/tmp
 mkdir -p /nonexistent
 
 sm-prepare-image -y
