@@ -1,0 +1,30 @@
+#!/usr/bin/bash
+#
+# Put customizations to your image in this file.
+
+PATH=/opt/local/gnu/bin:/opt/local/bin:/opt/local/sbin:/usr/bin:/usr/sbin
+
+# Exit if any commands fail
+set -o errexit
+
+echo "* Setup redis-requirements"
+mv /var/tmp/sentinel.conf /opt/local/etc/sentinel.conf
+chown redis:redis /opt/local/etc/redis.conf
+chown redis:redis /opt/local/etc/sentinel.conf
+gem install redis
+
+echo "* setup spiped"
+groupadd -g 120 spiped
+useradd -m -s /usr/bin/false -d / -u 120 -g spiped spiped
+dd if=/dev/urandom bs=32 count=1 2>/dev/null | shasum -a 512 | awk '{print $1}' | tr -d '\n' > /etc/ssh/spiped.key
+chmod 0640 /etc/ssh/spiped.key
+chown root:spiped /etc/ssh/spiped.key
+
+# svccfg import /opt/local/lib/svc/manifest/spiped-redis.xml
+# svccfg delete svc:/pkgsrc/spiped:default
+
+echo "* Cleaning up"
+rm /root/customize
+cp /etc/skel/.bashrc /root/.bashrc
+
+sm-prepare-image -y

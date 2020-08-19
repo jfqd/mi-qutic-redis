@@ -1,0 +1,5 @@
+# List packages to add to your image one per line.
+redis
+spiped
+py37-pip
+py37-redis
