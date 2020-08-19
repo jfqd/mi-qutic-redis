@@ -30,5 +30,6 @@ chown root:spiped /etc/ssh/spiped.key
 echo "* Cleaning up"
 rm /root/customize
 cp /etc/skel/.bashrc /root/.bashrc
+mkdir -p /nonexistent
 
 sm-prepare-image -y
