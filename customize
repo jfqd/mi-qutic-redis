@@ -13,6 +13,9 @@ chown redis:redis /opt/local/etc/redis.conf
 chown redis:redis /opt/local/etc/sentinel.conf
 gem install redis
 
+echo "* import sentinel smf manifest"
+svccfg import /opt/local/lib/svc/manifest/sentinel.xml
+
 echo "* setup spiped"
 groupadd -g 120 spiped
 useradd -m -s /usr/bin/false -d / -u 120 -g spiped spiped
@@ -20,6 +23,7 @@ dd if=/dev/urandom bs=32 count=1 2>/dev/null | shasum -a 512 | awk '{print $1}' 
 chmod 0640 /etc/ssh/spiped.key
 chown root:spiped /etc/ssh/spiped.key
 
+# echo "* import spiped-redis smf manifest"
 # svccfg import /opt/local/lib/svc/manifest/spiped-redis.xml
 # svccfg delete svc:/pkgsrc/spiped:default
 

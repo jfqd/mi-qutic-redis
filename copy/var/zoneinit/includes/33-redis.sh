@@ -78,4 +78,8 @@ EOF
 touch /var/log/redis/redis.log
 chown redis:redis /var/log/redis/redis.log
 
+# enable redis
 svcadm enable svc:/pkgsrc/redis:default
+
+# enable sentinel
+svcadm enable redis/sentinel
