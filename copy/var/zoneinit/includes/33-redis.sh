@@ -11,7 +11,7 @@ if mdata-get redis_master_host 1>/dev/null 2>&1; then
 
   ACTIVE_IP=$(ifconfig net0 | grep 'inet '  | awk '{print $2}' | tr -d '\n')
   if [[ $REDIS_MASTER_HOST != "${ACTIVE_IP}" ]]; then
-    sed -i "s/# slaveof <masterip> <masterport>/slaveof ${REDIS_MASTER_HOST} ${REDIS_PORT}/" \
+    sed -i "s/# replicaof <masterip> <masterport>/replicaof ${REDIS_MASTER_HOST} ${REDIS_PORT}/" \
         /opt/local/etc/redis.conf
     sed -i "s/127.0.0.1/${REDIS_MASTER_HOST}/" \
         /opt/local/etc/sentinel.conf
@@ -26,7 +26,9 @@ fi
 
 if mdata-get redis_master_pwd 1>/dev/null 2>&1; then
   REDIS_MASTER_PWD=`mdata-get redis_master_pwd`
-  sed -i "s/# requirepass foobared/requirepass ${REDIS_MASTER_PWD}/" \
+  sed -e \
+      -i "s/# requirepass foobared/requirepass ${REDIS_MASTER_PWD}/" \
+      -i "s/# masterauth <master-password>/masterauth {REDIS_MASTER_PWD}/" \
       /opt/local/etc/redis.conf
   sed -i "s/securepwd/${REDIS_MASTER_PWD}/" \
       /opt/local/etc/sentinel.conf
@@ -64,7 +66,7 @@ gsed -i \
      -e "s/protected-mode yes/protected-mode no/" \
      -e "s/# maxmemory <bytes>/maxmemory 1gb/" \
      -e "s/# maxmemory-policy noeviction/# maxmemory-policy allkeys-lfu/" \
-     -e "s/# unixsocket \/tmp\/redis.sock/unixsocket \/var\/tmp\/redis.sock/" \
+     -e "s/# unixsocket \/tmp\/redis.sock/# unixsocket \/var\/tmp\/redis.sock/" \
      /opt/local/etc/redis.conf
 
 cat >> /opt/local/etc/redis.conf << EOF
@@ -84,3 +86,4 @@ svcadm enable svc:/pkgsrc/redis:default
 
 # enable sentinel
 svcadm enable redis/sentinel
+ln -nfs /var/svc/log/redis-sentinel:default.log /var/log/redis/sentinel_log
