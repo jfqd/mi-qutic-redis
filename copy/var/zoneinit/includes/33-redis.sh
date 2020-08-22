@@ -37,6 +37,9 @@ if mdata-get redis_master_pwd 1>/dev/null 2>&1; then
   # ensure onyl root and zabbix can read this file
   chown root:zabbix /opt/local/etc/zabbix_agentd.conf.d/redis.conf
   chmod 0640 /opt/local/etc/zabbix_agentd.conf.d/redis.conf
+  # redis-cli
+  echo "export REDISCLI_AUTH=${REDIS_MASTER_PWD}" >> /root/.bashrc
+  chmod 0640 /root/.bashrc
 else
   sed -i "s/sentinel auth-pass redis_master securepwd//" \
       /opt/local/etc/sentinel.conf
