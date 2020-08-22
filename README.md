@@ -5,8 +5,9 @@ SmartOS image for redis with sentinel support
 ## Useful sentinel commands
 
 ```
-redis-cli -p 26379 SENTINEL replicas mymaster
-redis-cli -p 26379 SENTINEL sentinels mymaster
+redis-cli --tls -p 26379 SENTINEL masters
+redis-cli --tls -p 26379 SENTINEL replicas mymaster
+redis-cli --tls -p 26379 SENTINEL sentinels mymaster
 ```
 
 ## Redis sentinel documentation
