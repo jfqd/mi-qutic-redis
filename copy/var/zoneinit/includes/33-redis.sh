@@ -71,6 +71,15 @@ if mdata-get redis_tls_port 1>/dev/null 2>&1; then
        -e "s/# tls-ciphersuites TLS_CHACHA20_POLY1305_SHA256/tls-ciphersuites TLS_CHACHA20_POLY1305_SHA256/" \
        -e "s/# tls-prefer-server-ciphers yes/tls-prefer-server-ciphers yes/" \
        /opt/local/etc/redis.conf
+  gsed -i \
+       -e "s|# tls-cert-file /opt/local/etc/tls/redis.crt|tls-cert-file /opt/local/etc/tls/redis.crt|" \
+       -e "s|# tls-key-file /opt/local/etc/tls/redis.key|tls-key-file /opt/local/etc/tls/redis.key|" \
+       -e "s|# tls-ca-cert-file /etc/ssl/certs/ca-certificates.crt|tls-ca-cert-file /etc/ssl/certs/ca-certificates.crt|" \
+       -e "s|# tls-auth-clients no|tls-auth-clients no|" \
+       -e "s|# tls-replication yes|tls-replication yes|" \
+       -e "s|# tls-port 26379|tls-port 26379|" \
+       -e "s|# port 0|port 0|" \
+       /opt/local/etc/sentinel.conf
 fi
 
 gsed -i \
