@@ -12,21 +12,13 @@ mv /var/zoneinit/tmp/sentinel.conf /opt/local/etc/sentinel.conf
 chown redis:redis /opt/local/etc/redis.conf
 chown redis:redis /opt/local/etc/sentinel.conf
 chmod 0640 /opt/local/etc/sentinel.conf
+mkdir -p /opt/local/etc/tls/
+chown redis:redis /opt/local/etc/tls/
+chmod 0750 /opt/local/etc/tls/
 gem install redis
 
 echo "* import sentinel smf manifest"
 svccfg import /opt/local/lib/svc/manifest/sentinel.xml
-
-echo "* setup spiped"
-groupadd -g 120 spiped
-useradd -m -s /usr/bin/false -d / -u 120 -g spiped spiped
-dd if=/dev/urandom bs=32 count=1 2>/dev/null | shasum -a 512 | awk '{print $1}' | tr -d '\n' > /etc/ssh/spiped.key
-chmod 0640 /etc/ssh/spiped.key
-chown root:spiped /etc/ssh/spiped.key
-
-# echo "* import spiped-redis smf manifest"
-# svccfg import /opt/local/lib/svc/manifest/spiped-redis.xml
-# svccfg delete svc:/pkgsrc/spiped:default
 
 echo "* Cleaning up"
 rm /root/customize
