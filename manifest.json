@@ -28,6 +28,7 @@
     "redis_master_host":      {"type": "text", "description": "redis master host ip address, set it to 127.0.0.1 if master"},
     "redis_master_name":      {"type": "text", "description": "redis master name"},
     "redis_master_pwd":       {"type": "text", "description": "redis password"},
-    "redis_tls_port":         {"type": "text", "description": "redis port for tls connection, leave blank if not used."}
+    "redis_tls_port":         {"type": "text", "description": "redis port for tls connection, leave blank if not used."},
+    "redis_tls_pem":          {"type": "text", "description": "redis tls pem"}
   }
 }

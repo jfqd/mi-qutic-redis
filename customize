@@ -12,9 +12,6 @@ mv /var/zoneinit/tmp/sentinel.conf /opt/local/etc/sentinel.conf
 chown redis:redis /opt/local/etc/redis.conf
 chown redis:redis /opt/local/etc/sentinel.conf
 chmod 0640 /opt/local/etc/sentinel.conf
-mkdir -p /opt/local/etc/tls/
-chown redis:redis /opt/local/etc/tls/
-chmod 0750 /opt/local/etc/tls/
 gem install redis
 
 echo "* import sentinel smf manifest"

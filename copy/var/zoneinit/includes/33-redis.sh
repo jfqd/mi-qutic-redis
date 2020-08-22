@@ -59,17 +59,18 @@ fi
 
 if mdata-get redis_tls_port 1>/dev/null 2>&1; then
   REDIS_TLS_PORT=`mdata-get redis_tls_port`
-  cat >> /opt/local/etc/redis.conf << EOF
-# tls support
-tls-port ${REDIS_TLS_PORT}
-tls-replication
-EOF
-else
-  cat >> /opt/local/etc/redis.conf << EOF
-# to enable tls support remove comments
-# tls-port 6380
-# tls-replication
-EOF
+  gsed -i \
+       -e "s/# tls-port 6379/tls-port ${REDIS_TLS_PORT}/" \
+       -e "s|# tls-cert-file redis.crt|tls-cert-file /opt/local/etc/tls/redis.crt|" \
+       -e "s|# tls-key-file redis.key|tls-key-file /opt/local/etc/tls/redis.key|" \
+       -e "s|# tls-ca-cert-file ca.crt|tls-ca-cert-file /etc/ssl/certs/ca-certificates.crt|" \
+       -e "s/# tls-auth-clients no/tls-auth-clients no/" \
+       -e "s/# tls-replication yes/tls-replication yes/" \
+       -e "s/# tls-ciphers DEFAULT:!MEDIUM/tls-ciphers DEFAULT:!MEDIUM/" \
+       -e "s/# tls-protocols \"TLSv1.2 TLSv1.3\"/tls-protocols \"TLSv1.2 TLSv1.3\"/" \
+       -e "s/# tls-ciphersuites TLS_CHACHA20_POLY1305_SHA256/tls-ciphersuites TLS_CHACHA20_POLY1305_SHA256/" \
+       -e "s/# tls-prefer-server-ciphers yes/tls-prefer-server-ciphers yes/" \
+       /opt/local/etc/redis.conf
 fi
 
 gsed -i \
