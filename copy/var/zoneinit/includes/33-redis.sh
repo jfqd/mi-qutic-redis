@@ -85,6 +85,7 @@ if mdata-get redis_tls_port 1>/dev/null 2>&1; then
 fi
 
 gsed -i \
+     -e "s/databases 16/databases 100/" \
      -e "s/bind 127.0.0.1/bind 0.0.0.0/" \
      -e "s/protected-mode yes/protected-mode no/" \
      -e "s/# maxmemory <bytes>/maxmemory 1gb/" \
