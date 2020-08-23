@@ -30,7 +30,9 @@ if mdata-get redis_master_pwd 1>/dev/null 2>&1; then
       -i "s/# requirepass foobared/requirepass ${REDIS_MASTER_PWD}/" \
       -i "s/# masterauth <master-password>/masterauth {REDIS_MASTER_PWD}/" \
       /opt/local/etc/redis.conf
-  sed -i "s/securepwd/${REDIS_MASTER_PWD}/" \
+  sed -e \
+      -i "s/# sentinel auth-pass redis_master securepwd/sentinel auth-pass redis_master ${REDIS_MASTER_PWD}/" \
+      -i "s/# requirepass foobared/requirepass ${REDIS_MASTER_PWD}/" \
       /opt/local/etc/sentinel.conf
   sed -i "s/-a securepwd/-a ${REDIS_MASTER_PWD}/" \
       /opt/local/etc/zabbix_agentd.conf.d/redis.conf
