@@ -8,6 +8,7 @@ parser.add_argument('metric',nargs='?')
 parser.add_argument('db',default='none',nargs='?')
 parser.add_argument('-p','--port',dest='redis_port',action='store',help='Redis server port',default=6379,type=int)
 parser.add_argument('-a','--auth',dest='redis_pass',action='store',help='Redis server pass',default=None)
+parser.add_argument('-t','--tls', dest='redis_tls', action='store',help='Redis server tls', default=True,type=bool)
 args = parser.parse_args()
 
 zabbix_host = '127.0.0.1'       # Zabbix Server IP
@@ -84,7 +85,7 @@ def _recv_all(sock, count):
 
 def main():
     if redis_hostname and args.metric:
-        client = redis.StrictRedis(host=redis_hostname, port=args.redis_port, password=args.redis_pass)
+        client = redis.StrictRedis(host=redis_hostname, port=args.redis_port, password=args.redis_pass, ssl=args.redis_tls)
         server_info = client.info()
 
         if args.metric:
