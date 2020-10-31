@@ -1,0 +1,13 @@
+#!/usr/bin/bash
+(
+umask 0077;
+# Split files for nginx usage
+openssl pkey -in "${TLS_HOME}/redis.pem" -out "${TLS_HOME}/redis.key";
+openssl crl2pkcs7 -nocrl -certfile "${TLS_HOME}/redis.pem" | \
+  openssl pkcs7 -print_certs -out "${TLS_HOME}/redis.crt"
+)
+chmod 0640 "${TLS_HOME}"/redis.*
+chown -R redis:redis "${TLS_HOME}"
+
+svcadm restart pkgsrc/redis
+svcadm restart sentinel
