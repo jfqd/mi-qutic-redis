@@ -100,5 +100,7 @@ chown redis:redis /var/log/redis/redis.log
 svcadm enable svc:/pkgsrc/redis:default
 
 # enable sentinel
-svcadm enable redis/sentinel
-ln -nfs /var/svc/log/redis-sentinel:default.log /var/log/redis/sentinel_log
+if mdata-get redis_master_name 1>/dev/null 2>&1; then
+  svcadm enable redis/sentinel
+  ln -nfs /var/svc/log/redis-sentinel:default.log /var/log/redis/sentinel_log
+fi
