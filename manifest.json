@@ -1,6 +1,6 @@
 {
   "name":         "qutic-redis",
-  "version":      "20191127.0",
+  "version":      "20201019.0",
   "description":  "A SmartOS 64-bit redis image",
   "organization": "qutic development",
   "brand":        "Instance",
